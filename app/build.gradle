@@ -33,6 +33,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding = true
+    }
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -45,26 +51,27 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.0.1'
 
     //navigation api
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.4.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
 
-    //lifecycle
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
+    //LifeCycle
+    implementation 'androidx.lifecycle:lifecycle-common:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
+//    implementation 'android.arch.lifecycle:extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
 
-//    // Dagger Core
-//    implementation "com.google.dagger:dagger:2.40.5"
-//    kapt "com.google.dagger:dagger-compiler:2.40.5"
-//
-//    // Dagger Android
-//    api 'com.google.dagger:dagger-android:2.37'
-//    api 'com.google.dagger:dagger-android-support:2.37'
-//    kapt 'com.google.dagger:dagger-android-processor:2.40.5'
+    //Glide
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+
+    //Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
 
     //Hilt
     implementation 'com.google.dagger:hilt-android:2.41'
-    annotationProcessor 'com.google.dagger:hilt-compiler:2.41'
+    kapt 'com.google.dagger:hilt-compiler:2.41'
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
