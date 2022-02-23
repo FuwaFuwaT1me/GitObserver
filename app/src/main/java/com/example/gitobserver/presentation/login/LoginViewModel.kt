@@ -21,7 +21,6 @@ class LoginViewModel @Inject constructor(
 
     fun login(token: String) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
-        kotlinx.coroutines.delay(1000)
         try {
             emit(Resource.success(data = gitHubLoginUseCase.requestLogin("Bearer $token")))
         } catch (exception: Exception) {

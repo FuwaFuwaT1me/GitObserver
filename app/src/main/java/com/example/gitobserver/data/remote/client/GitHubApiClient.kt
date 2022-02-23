@@ -1,6 +1,7 @@
 package com.example.gitobserver.data.remote.client
 
 import com.example.gitobserver.data.remote.api.GitHubLoginApiService
+import com.example.gitobserver.data.remote.api.GitHubRepositoriesApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -18,5 +19,10 @@ object GitHubApiClient {
     @Synchronized
     fun buildGitHubLoginApi(): GitHubLoginApiService {
         return getInstance().create(GitHubLoginApiService::class.java)
+    }
+
+    @Synchronized
+    fun buildGitHubRepositoriesApi(): GitHubRepositoriesApiService {
+        return getInstance().create(GitHubRepositoriesApiService::class.java)
     }
 }
