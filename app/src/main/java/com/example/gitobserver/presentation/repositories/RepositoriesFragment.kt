@@ -12,13 +12,20 @@ import com.example.gitobserver.R
 import com.example.gitobserver.databinding.FragmentLoginBinding
 import com.example.gitobserver.databinding.FragmentRepositoriesBinding
 import com.example.gitobserver.domain.model.GitHubRepository
+import com.example.gitobserver.domain.usecase.SharedPrefStorageUseCase
 import com.example.gitobserver.presentation.login.LoginViewModel
 import com.example.gitobserver.presentation.repositories.adapter.RepositoriesRecyclerAdapter
 import com.example.gitobserver.utils.Status
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class RepositoriesFragment : Fragment() {
 
-    private val mViewModel by viewModels<RepositoriesViewModel>()
+    @Inject
+    lateinit var sharedPrefStorageUseCase: SharedPrefStorageUseCase
+
+    private val mViewModel: RepositoriesViewModel by viewModels()
     private val mBinding by viewBinding(FragmentRepositoriesBinding::bind)
 
     private lateinit var mAdapter: RepositoriesRecyclerAdapter
@@ -63,7 +70,7 @@ class RepositoriesFragment : Fragment() {
     }
 
     private fun updateRecycler(repositories: List<GitHubRepository>) {
-        mAdapter = RepositoriesRecyclerAdapter(repositories)
+        mAdapter = RepositoriesRecyclerAdapter(repositories, sharedPrefStorageUseCase)
         mBinding.rcvRepositories.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
     }

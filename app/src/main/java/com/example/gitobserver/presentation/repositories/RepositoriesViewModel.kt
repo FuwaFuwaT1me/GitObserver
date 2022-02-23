@@ -1,10 +1,7 @@
 package com.example.gitobserver.presentation.repositories
 
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
-import com.example.gitobserver.app.App
 import com.example.gitobserver.domain.model.Resource
 import com.example.gitobserver.domain.usecase.GitHubRepositoriesUseCase
 import com.example.gitobserver.domain.usecase.SharedPrefStorageUseCase
@@ -25,7 +22,7 @@ class RepositoriesViewModel @Inject constructor(
             emit(
                 Resource.success(
                     data = gitHubRepositoriesUseCase.getRepositories(
-                        sharedPrefStorageUseCase.get().login
+                        sharedPrefStorageUseCase.getUserDetails().login
                     )
                 )
             )

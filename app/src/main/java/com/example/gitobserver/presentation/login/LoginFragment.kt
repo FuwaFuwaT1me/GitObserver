@@ -1,6 +1,7 @@
 package com.example.gitobserver.presentation.login
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +21,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
 
-    private val mViewModel by viewModels<LoginViewModel>()
+    private val mViewModel: LoginViewModel by viewModels()
     private val mBinding by viewBinding(FragmentLoginBinding::bind)
 
     @Inject
@@ -41,11 +42,12 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupUI(view: View) {
-        mBinding.btn.setOnClickListener {
+        mBinding.btnLogin.setOnClickListener {
             requestLogin(view = view, inputToken = mBinding.etLoginToken.text.toString())
         }
 
         mBinding.etLoginToken.addTextChangedListener {
+            Log.d("AAA", "changed")
             updateErrorMessage(isError = false)
         }
     }
@@ -56,17 +58,17 @@ class LoginFragment : Fragment() {
                 it?.let { resource ->
                     when (resource.status) {
                         Status.SUCCESS -> {
-                            mBinding.progress.visibility = View.GONE
-                            sharedPrefStorageUseCase.save(resource.data!!)
+                            updateLoading(isLoading = false)
+                            sharedPrefStorageUseCase.saveUserDetails(resource.data!!)
                             moveToRepositories(view)
                         }
                         Status.ERROR -> {
-                            mBinding.progress.visibility = View.GONE
+                            updateLoading(isLoading = false)
                             updateErrorMessage(isError = true)
                             Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
                         }
                         Status.LOADING -> {
-                            mBinding.progress.visibility = View.VISIBLE
+                            updateLoading(isLoading = true)
                         }
                     }
                 }
@@ -79,12 +81,19 @@ class LoginFragment : Fragment() {
 
     private fun updateErrorMessage(isError: Boolean) {
         if (isError) {
-            mBinding.etLayoutLoginToken.helperText = "Invalid token"
-            //mBinding.etLoginToken.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.red))
-            //mBinding.etLayoutLoginToken.stroke
+            mBinding.etLayoutLoginToken.error = "Invalid token"
         } else {
-            mBinding.etLayoutLoginToken.helperText = ""
-            //mBinding.etLoginToken.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
+            mBinding.etLayoutLoginToken.error = ""
+        }
+    }
+
+    private fun updateLoading(isLoading: Boolean) {
+        if (isLoading) {
+            mBinding.progress.visibility = View.VISIBLE
+            mBinding.btnLogin.text = ""
+        } else {
+            mBinding.progress.visibility = View.INVISIBLE
+            mBinding.btnLogin.text = "Sign in"
         }
     }
 }
