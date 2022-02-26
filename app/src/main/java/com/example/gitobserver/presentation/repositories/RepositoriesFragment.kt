@@ -52,6 +52,7 @@ class RepositoriesFragment : Fragment(), OnRepositoryClickListener {
             mBinding.ivNothing.visibility = View.INVISIBLE
             mBinding.fabRefresh.visibility = View.INVISIBLE
             mBinding.ivNoInternet.visibility = View.INVISIBLE
+            mBinding.ivError.visibility = View.INVISIBLE
             updateUI()
         }
     }
@@ -105,8 +106,8 @@ class RepositoriesFragment : Fragment(), OnRepositoryClickListener {
                         }
                         Status.ERROR -> {
                             mBinding.progressBar.visibility = View.GONE
-                            Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT)
-                                .show()
+                            mBinding.ivError.visibility = View.VISIBLE
+                            mBinding.fabRefresh.visibility = View.VISIBLE
                         }
                         Status.LOADING -> {
                             mBinding.progressBar.visibility = View.VISIBLE

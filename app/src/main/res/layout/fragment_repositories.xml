@@ -49,6 +49,19 @@
         app:tint="@color/white" />
 
     <ImageView
+        android:id="@+id/iv_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/img_error"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
+        app:tint="@color/white" />
+
+    <ImageView
         android:id="@+id/iv_nothing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
