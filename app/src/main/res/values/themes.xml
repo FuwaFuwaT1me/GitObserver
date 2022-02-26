@@ -9,4 +9,8 @@
 
     </style>
 
+    <style name="Toolbar" parent="Theme.MaterialComponents">
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
 </resources>

@@ -3,7 +3,8 @@ package com.example.gitobserver.presentation.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gitobserver.R
-import com.example.gitobserver.domain.usecase.SharedPrefStorageUseCase
+import com.example.gitobserver.domain.usecase.SharedPrefLanguageColorsStorageUseCase
+import com.example.gitobserver.domain.usecase.SharedPrefUserStorageUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.*
 import javax.inject.Inject
@@ -13,7 +14,10 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var sharedPrefStorageUseCase: SharedPrefStorageUseCase
+    lateinit var sharedPrefUserStorageUseCase: SharedPrefUserStorageUseCase
+
+    @Inject
+    lateinit var sharedPrefLanguageColorsStorageUseCase: SharedPrefLanguageColorsStorageUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setLanguageColors() {
-        if (sharedPrefStorageUseCase.getLanguageColors() == "") {
+        if (sharedPrefLanguageColorsStorageUseCase.getLanguageColors() == "") {
             val inputStream: InputStream = assets.open("colors.json")
             val writer: Writer = StringWriter()
             val buffer = CharArray(1024)
@@ -35,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            sharedPrefStorageUseCase.saveLanguageColors(writer.toString())
+            sharedPrefLanguageColorsStorageUseCase.saveLanguageColors(writer.toString())
         }
     }
 }

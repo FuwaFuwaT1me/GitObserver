@@ -4,12 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gitobserver.domain.model.GitHubRepository
-import com.example.gitobserver.domain.usecase.SharedPrefStorageUseCase
+import com.example.gitobserver.domain.usecase.SharedPrefLanguageColorsStorageUseCase
+import com.example.gitobserver.domain.usecase.SharedPrefUserStorageUseCase
 import com.example.gitobserver.presentation.repositories.OnRepositoryClickListener
 
 class RepositoriesRecyclerAdapter(
     private val repositories: List<GitHubRepository>,
-    private val sharedPrefStorageUseCase: SharedPrefStorageUseCase,
+    private val sharedPrefLanguageColorsStorageUseCase: SharedPrefLanguageColorsStorageUseCase,
     private val onRepositoryClickListener: OnRepositoryClickListener
 ) : RecyclerView.Adapter<RepositoriesRecyclerViewHolder>() {
     override fun onCreateViewHolder(
@@ -20,7 +21,7 @@ class RepositoriesRecyclerAdapter(
         return RepositoriesRecyclerViewHolder(
             inflater,
             parent,
-            sharedPrefStorageUseCase,
+            sharedPrefLanguageColorsStorageUseCase,
             onRepositoryClickListener
         )
     }

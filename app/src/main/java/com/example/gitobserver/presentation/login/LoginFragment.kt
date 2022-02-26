@@ -13,7 +13,7 @@ import androidx.navigation.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.gitobserver.R
 import com.example.gitobserver.databinding.FragmentLoginBinding
-import com.example.gitobserver.domain.usecase.SharedPrefStorageUseCase
+import com.example.gitobserver.domain.usecase.SharedPrefUserStorageUseCase
 import com.example.gitobserver.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -25,12 +25,14 @@ class LoginFragment : Fragment() {
     private val mBinding by viewBinding(FragmentLoginBinding::bind)
 
     @Inject
-    lateinit var sharedPrefStorageUseCase: SharedPrefStorageUseCase
+    lateinit var sharedPrefUserStorageUseCase: SharedPrefUserStorageUseCase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
 
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
@@ -38,7 +40,16 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupUI(view)
+        if (sharedPrefUserStorageUseCase.getUserDetails() != null) {
+            moveToRepositories(view)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        mBinding.toolBar.title = "GitHub observer"
+        setupUI(requireView())
     }
 
     private fun setupUI(view: View) {
@@ -49,7 +60,6 @@ class LoginFragment : Fragment() {
         }
 
         mBinding.etLoginToken.addTextChangedListener {
-            Log.d("AAA", "changed")
             updateErrorMessage(isError = false)
         }
     }
@@ -57,11 +67,12 @@ class LoginFragment : Fragment() {
     private fun requestLogin(view: View, inputToken: String) {
         mViewModel.login(inputToken)
             .observe(viewLifecycleOwner) {
+                Log.d("AAA", "login $it")
                 it?.let { resource ->
                     when (resource.status) {
                         Status.SUCCESS -> {
                             updateLoading(isLoading = false)
-                            sharedPrefStorageUseCase.saveUserDetails(resource.data!!)
+                            sharedPrefUserStorageUseCase.saveUserDetails(resource.data!!)
                             moveToRepositories(view)
                         }
                         Status.ERROR -> {

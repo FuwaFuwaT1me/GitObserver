@@ -10,11 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.gitobserver.R
-import com.example.gitobserver.databinding.FragmentLoginBinding
 import com.example.gitobserver.databinding.FragmentRepositoriesBinding
 import com.example.gitobserver.domain.model.GitHubRepository
-import com.example.gitobserver.domain.usecase.SharedPrefStorageUseCase
-import com.example.gitobserver.presentation.login.LoginViewModel
+import com.example.gitobserver.domain.usecase.SharedPrefLanguageColorsStorageUseCase
+import com.example.gitobserver.domain.usecase.SharedPrefUserStorageUseCase
 import com.example.gitobserver.presentation.repositories.adapter.RepositoriesRecyclerAdapter
 import com.example.gitobserver.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +23,10 @@ import javax.inject.Inject
 class RepositoriesFragment : Fragment(), OnRepositoryClickListener {
 
     @Inject
-    lateinit var sharedPrefStorageUseCase: SharedPrefStorageUseCase
+    lateinit var sharedPrefLanguageColorsStorageUseCase: SharedPrefLanguageColorsStorageUseCase
+
+    @Inject
+    lateinit var sharedPrefUserStorageUseCase: SharedPrefUserStorageUseCase
 
     private val mViewModel: RepositoriesViewModel by viewModels()
     private val mBinding by viewBinding(FragmentRepositoriesBinding::bind)
@@ -47,6 +49,18 @@ class RepositoriesFragment : Fragment(), OnRepositoryClickListener {
     }
 
     private fun setupUI() {
+        mBinding.toolBar.title = "Repositories"
+
+        mBinding.toolBar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.exit -> {
+                    view?.findNavController()?.popBackStack()
+                    sharedPrefUserStorageUseCase.exitUser()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun updateRepositories() {
@@ -71,7 +85,7 @@ class RepositoriesFragment : Fragment(), OnRepositoryClickListener {
     }
 
     private fun updateRecycler(repositories: List<GitHubRepository>) {
-        mAdapter = RepositoriesRecyclerAdapter(repositories, sharedPrefStorageUseCase, this)
+        mAdapter = RepositoriesRecyclerAdapter(repositories, sharedPrefLanguageColorsStorageUseCase, this)
         mBinding.rcvRepositories.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
     }
