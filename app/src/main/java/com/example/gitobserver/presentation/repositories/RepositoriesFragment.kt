@@ -1,6 +1,7 @@
 package com.example.gitobserver.presentation.repositories
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.example.gitobserver.domain.model.GitHubRepository
 import com.example.gitobserver.domain.usecase.SharedPrefLanguageColorsStorageUseCase
 import com.example.gitobserver.domain.usecase.SharedPrefUserStorageUseCase
 import com.example.gitobserver.presentation.repositories.adapter.RepositoriesRecyclerAdapter
+import com.example.gitobserver.utils.CheckInternetConnection
 import com.example.gitobserver.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -33,6 +35,8 @@ class RepositoriesFragment : Fragment(), OnRepositoryClickListener {
 
     private lateinit var mAdapter: RepositoriesRecyclerAdapter
 
+    private var lastRepositories: List<GitHubRepository>? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,8 +48,32 @@ class RepositoriesFragment : Fragment(), OnRepositoryClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupUI()
-        updateRepositories()
+        mBinding.fabRefresh.setOnClickListener {
+            mBinding.ivNothing.visibility = View.INVISIBLE
+            mBinding.fabRefresh.visibility = View.INVISIBLE
+            mBinding.ivNoInternet.visibility = View.INVISIBLE
+            updateUI()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateUI()
+    }
+
+    private fun updateUI() {
+        mBinding.progressBar.visibility = View.VISIBLE
+        if (CheckInternetConnection.isInternetAvailable(requireContext()) || lastRepositories != null) {
+            mBinding.ivNoInternet.visibility = View.INVISIBLE
+            mBinding.fabRefresh.visibility = View.GONE
+            setupUI()
+            updateRepositories()
+        } else {
+            mBinding.progressBar.visibility = View.GONE
+            mBinding.ivNoInternet.visibility = View.VISIBLE
+            mBinding.fabRefresh.visibility = View.VISIBLE
+            Toast.makeText(requireContext(), "No internet connection", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setupUI() {
@@ -64,20 +92,25 @@ class RepositoriesFragment : Fragment(), OnRepositoryClickListener {
     }
 
     private fun updateRepositories() {
-        mViewModel.getGitHubRepositories().observe(viewLifecycleOwner) {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        updateRecycler(resource.data!!)
-                        mBinding.progressBar.visibility = View.GONE
-                        mBinding.rcvRepositories.visibility = View.VISIBLE
-                    }
-                    Status.ERROR -> {
-                        mBinding.progressBar.visibility = View.GONE
-                        Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
-                    }
-                    Status.LOADING -> {
-                        mBinding.progressBar.visibility = View.VISIBLE
+        if (lastRepositories != null) {
+            updateRecycler(lastRepositories!!)
+        } else {
+            mViewModel.getGitHubRepositories().observe(viewLifecycleOwner) {
+                it?.let { resource ->
+                    when (resource.status) {
+                        Status.SUCCESS -> {
+                            updateRecycler(resource.data!!)
+                            mBinding.progressBar.visibility = View.GONE
+                            mBinding.rcvRepositories.visibility = View.VISIBLE
+                        }
+                        Status.ERROR -> {
+                            mBinding.progressBar.visibility = View.GONE
+                            Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                        Status.LOADING -> {
+                            mBinding.progressBar.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
@@ -85,14 +118,34 @@ class RepositoriesFragment : Fragment(), OnRepositoryClickListener {
     }
 
     private fun updateRecycler(repositories: List<GitHubRepository>) {
-        mAdapter = RepositoriesRecyclerAdapter(repositories, sharedPrefLanguageColorsStorageUseCase, this)
-        mBinding.rcvRepositories.adapter = mAdapter
-        mAdapter.notifyDataSetChanged()
+        Log.d("CCC", repositories.toString())
+        if (repositories.isEmpty()) {
+            showIfEmpty()
+        } else {
+            mBinding.rcvRepositories.visibility = View.VISIBLE
+            mBinding.progressBar.visibility = View.INVISIBLE
+            lastRepositories = repositories
+            mAdapter = RepositoriesRecyclerAdapter(
+                repositories,
+                sharedPrefLanguageColorsStorageUseCase,
+                this
+            )
+            mBinding.rcvRepositories.adapter = mAdapter
+            mAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun showIfEmpty() {
+        mBinding.rcvRepositories.visibility = View.GONE
+        mBinding.ivNothing.visibility = View.VISIBLE
+        mBinding.fabRefresh.visibility = View.VISIBLE
     }
 
     override fun onclick(gitHubRepository: GitHubRepository) {
         val action: RepositoriesFragmentDirections.ActionRepositoriesFragmentToContentsFragment =
-            RepositoriesFragmentDirections.actionRepositoriesFragmentToContentsFragment(gitHubRepository)
+            RepositoriesFragmentDirections.actionRepositoriesFragmentToContentsFragment(
+                gitHubRepository
+            )
         action.repository = gitHubRepository
         view?.findNavController()?.navigate(action)
     }

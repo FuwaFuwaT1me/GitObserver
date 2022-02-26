@@ -17,6 +17,7 @@ import com.example.gitobserver.R
 import com.example.gitobserver.databinding.FragmentContentsBinding
 import com.example.gitobserver.domain.model.GitHubRepository
 import com.example.gitobserver.domain.usecase.SharedPrefUserStorageUseCase
+import com.example.gitobserver.utils.CheckInternetConnection
 import com.example.gitobserver.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
 import io.noties.markwon.Markwon
@@ -46,6 +47,12 @@ class ContentsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mBinding.fabRefresh.setOnClickListener {
+            mBinding.ivNoInternet.visibility = View.INVISIBLE
+            mBinding.fabRefresh.visibility = View.GONE
+            updateRepositoryContent()
+        }
+
         gitHubRepository = args.repository
 
         mBinding.toolBar.title = gitHubRepository.name
@@ -62,7 +69,6 @@ class ContentsFragment : Fragment() {
                 else -> false
             }
         }
-
         updateRepositoryContent()
     }
 
@@ -82,8 +88,14 @@ class ContentsFragment : Fragment() {
         mBinding.tvForks.text = gitHubRepository.forksCount.toString()
         mBinding.tvWatchers.text = gitHubRepository.watchersCount.toString()
 
-        val markwon = Markwon.create(requireContext())
-        markwon.setMarkdown(mBinding.tvRepositoryContents, htmlContent)
+        if (htmlContent == "/") {
+
+        } else if (htmlContent == "") {
+            mBinding.ivNothing.visibility = View.VISIBLE
+        } else {
+            val markwon = Markwon.create(requireContext())
+            markwon.setMarkdown(mBinding.tvRepositoryContents, htmlContent)
+        }
     }
 
     private fun updateRepositoryContent() {
@@ -101,7 +113,13 @@ class ContentsFragment : Fragment() {
                     Status.ERROR -> {
                         mBinding.progressBar.visibility = View.GONE
                         mBinding.scrollViewRepository.visibility = View.VISIBLE
-                        setupUI()
+                        if (!CheckInternetConnection.isInternetAvailable(requireContext())) {
+                            mBinding.fabRefresh.visibility = View.VISIBLE
+                            mBinding.ivNoInternet.visibility = View.VISIBLE
+                            setupUI("/")
+                        } else {
+                            setupUI()
+                        }
                     }
                     Status.LOADING -> {
                         mBinding.progressBar.visibility = View.VISIBLE

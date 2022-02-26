@@ -12,4 +12,9 @@ class GitHubLoginUseCase @Inject constructor(
     suspend fun requestLogin(token: String): UserDetails {
         return loginRepositoryImpl.requestLogin(token)
     }
+
+    suspend fun requestLoginWithUsername(username: String): UserDetails {
+        return loginRepositoryImpl.requestLoginWithUsername(username)
+    }
+
 }

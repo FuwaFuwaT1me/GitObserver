@@ -27,14 +27,14 @@
     <ImageView
         android:id="@+id/iv_login"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:src="@drawable/github_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_bar_layout" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/et_layout_login_token"
+        android:id="@+id/et_layout_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -44,7 +44,6 @@
         app:boxStrokeColor="@color/blue"
         app:boxStrokeErrorColor="@color/red"
         app:boxStrokeWidth="1dp"
-
         app:boxStrokeWidthFocused="2dp"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
@@ -55,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@id/iv_login">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_login_token"
+            android:id="@+id/et_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
@@ -65,6 +64,16 @@
             android:textColorHighlight="@color/blue" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_change_login_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login with username"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        app:layout_constraintBottom_toTopOf="@+id/login_frame_layout_btn_are"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <FrameLayout
         android:id="@+id/login_frame_layout_btn_are"

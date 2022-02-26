@@ -6,4 +6,6 @@ import com.example.gitobserver.domain.model.UserDetails
 interface LoginRepository {
 
     suspend fun requestLogin(token: String): UserDetails
+
+    suspend fun requestLoginWithUsername(username: String): UserDetails
 }
