@@ -20,6 +20,9 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tool_bar"
             app:titleTextColor="@color/white"
+            app:menu="@menu/repositories"
+            app:navigationIcon="@drawable/ic_back"
+            android:theme="@style/Toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize" />
 

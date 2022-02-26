@@ -25,7 +25,7 @@
             android:id="@+id/rcv_repositories"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="gone"
             tools:listitem="@layout/repositories_list_item"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

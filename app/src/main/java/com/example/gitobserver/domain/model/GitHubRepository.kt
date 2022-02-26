@@ -10,7 +10,7 @@ data class GitHubRepository(
     val name: String,
     @SerializedName("html_url") val url: String,
     val description: String? = "",
-    val language: String,
+    val language: String? = "",
     @SerializedName("contents_url") val contentsUrl: String,
     @SerializedName("forks_count") val forksCount: Int,
     @SerializedName("stargazers_count") val starsCount: Int,

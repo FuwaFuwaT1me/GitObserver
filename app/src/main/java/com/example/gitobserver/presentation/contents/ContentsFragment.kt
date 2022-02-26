@@ -10,14 +10,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.gitobserver.R
 import com.example.gitobserver.databinding.FragmentContentsBinding
 import com.example.gitobserver.domain.model.GitHubRepository
+import com.example.gitobserver.domain.usecase.SharedPrefUserStorageUseCase
 import com.example.gitobserver.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
 import io.noties.markwon.Markwon
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -26,6 +29,9 @@ class ContentsFragment : Fragment() {
     private val mBinding by viewBinding(FragmentContentsBinding::bind)
     private val mViewModel: ContentsViewModel by viewModels()
     private val args by navArgs<ContentsFragmentArgs>()
+
+    @Inject
+    lateinit var sharedPrefUserStorageUseCase: SharedPrefUserStorageUseCase
 
     private lateinit var gitHubRepository: GitHubRepository
 
@@ -41,7 +47,21 @@ class ContentsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         gitHubRepository = args.repository
-        Log.d("BBB", "===$gitHubRepository")
+
+        mBinding.toolBar.title = gitHubRepository.name
+        mBinding.toolBar.setNavigationOnClickListener {
+            view.findNavController().popBackStack()
+        }
+        mBinding.toolBar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.exit -> {
+                    view.findNavController().navigate(R.id.action_contentsFragment_to_loginFragment)
+                    sharedPrefUserStorageUseCase.exitUser()
+                    true
+                }
+                else -> false
+            }
+        }
 
         updateRepositoryContent()
     }

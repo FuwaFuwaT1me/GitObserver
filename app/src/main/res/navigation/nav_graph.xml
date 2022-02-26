@@ -31,5 +31,9 @@
         <argument
             android:name="repository"
             app:argType="com.example.gitobserver.domain.model.GitHubRepository" />
+        <action
+            android:id="@+id/action_contentsFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment" />
     </fragment>
 </navigation>

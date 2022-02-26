@@ -1,6 +1,7 @@
 package com.example.gitobserver.presentation.repositories.adapter
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ class RepositoriesRecyclerViewHolder(
     private val mBinding by viewBinding(RepositoriesListItemBinding::bind)
 
     fun bind(gitHubRepository: GitHubRepository) {
+        Log.d("AAA", "$gitHubRepository")
         mBinding.repositoryItemName.text = gitHubRepository.name
         mBinding.repositoryItemLanguage.text = gitHubRepository.language
         try {
