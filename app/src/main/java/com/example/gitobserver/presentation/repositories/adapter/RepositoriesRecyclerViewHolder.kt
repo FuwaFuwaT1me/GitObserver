@@ -11,6 +11,7 @@ import com.example.gitobserver.data.repository.SharedPrefStorageRepositoryImpl
 import com.example.gitobserver.databinding.RepositoriesListItemBinding
 import com.example.gitobserver.domain.model.GitHubRepository
 import com.example.gitobserver.domain.usecase.SharedPrefStorageUseCase
+import com.example.gitobserver.presentation.repositories.OnRepositoryClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONObject
 import javax.inject.Inject
@@ -18,7 +19,8 @@ import javax.inject.Inject
 class RepositoriesRecyclerViewHolder(
     inflater: LayoutInflater,
     parent: ViewGroup,
-    private val sharedPrefStorageUseCase: SharedPrefStorageUseCase
+    private val sharedPrefStorageUseCase: SharedPrefStorageUseCase,
+    private val onRepositoryClickListener: OnRepositoryClickListener
 ) : RecyclerView.ViewHolder(inflater.inflate(R.layout.repositories_list_item, parent, false)) {
 
     private val mBinding by viewBinding(RepositoriesListItemBinding::bind)
@@ -31,15 +33,18 @@ class RepositoriesRecyclerViewHolder(
                 JSONObject(sharedPrefStorageUseCase.getLanguageColors())
                     .get(mBinding.repositoryItemLanguage.text.toString()).toString()
 
-            Log.d("AAA", color)
-
-
             mBinding.repositoryItemLanguage.setTextColor(
                 Color.parseColor(color)
             )
         } catch (exception: Exception) {
         }
         sharedPrefStorageUseCase.getLanguageColors()
+
         mBinding.repositoryItemDescription.text = gitHubRepository.description
+
+
+        itemView.setOnClickListener {
+            onRepositoryClickListener.onclick(gitHubRepository)
+        }
     }
 }

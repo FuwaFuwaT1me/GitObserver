@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.gitobserver.R
 import com.example.gitobserver.databinding.FragmentLoginBinding
@@ -20,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class RepositoriesFragment : Fragment() {
+class RepositoriesFragment : Fragment(), OnRepositoryClickListener {
 
     @Inject
     lateinit var sharedPrefStorageUseCase: SharedPrefStorageUseCase
@@ -70,8 +71,15 @@ class RepositoriesFragment : Fragment() {
     }
 
     private fun updateRecycler(repositories: List<GitHubRepository>) {
-        mAdapter = RepositoriesRecyclerAdapter(repositories, sharedPrefStorageUseCase)
+        mAdapter = RepositoriesRecyclerAdapter(repositories, sharedPrefStorageUseCase, this)
         mBinding.rcvRepositories.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
+    }
+
+    override fun onclick(gitHubRepository: GitHubRepository) {
+        val action: RepositoriesFragmentDirections.ActionRepositoriesFragmentToContentsFragment =
+            RepositoriesFragmentDirections.actionRepositoriesFragmentToContentsFragment(gitHubRepository)
+        action.repository = gitHubRepository
+        view?.findNavController()?.navigate(action)
     }
 }

@@ -7,14 +7,31 @@
     android:background="@color/black"
     tools:context=".presentation.login.LoginFragment">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/black_light"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/tool_bar"
+            app:titleTextColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <ImageView
         android:id="@+id/iv_login"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:src="@drawable/github_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/app_bar_layout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_layout_login_token"
@@ -23,16 +40,16 @@
         android:layout_margin="16dp"
         android:hint="Personal access token"
         android:textColorHint="@color/gray"
-        app:hintTextColor="@color/blue"
         app:boxBackgroundColor="@color/black"
         app:boxStrokeColor="@color/blue"
         app:boxStrokeErrorColor="@color/red"
-
         app:boxStrokeWidth="1dp"
+
         app:boxStrokeWidthFocused="2dp"
-        app:errorIconDrawable="@null"
         app:errorEnabled="true"
+        app:errorIconDrawable="@null"
         app:errorTextColor="@color/red"
+        app:hintTextColor="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_login">
@@ -42,10 +59,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:textColorHighlight="@color/blue"
             android:lines="1"
             android:maxLines="1"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/blue" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

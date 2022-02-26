@@ -42,6 +42,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupUI(view: View) {
+        mBinding.toolBar.title = "GitHub observer"
+
         mBinding.btnLogin.setOnClickListener {
             requestLogin(view = view, inputToken = mBinding.etLoginToken.text.toString())
         }

@@ -7,6 +7,8 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 
+apply plugin: "androidx.navigation.safeargs"
+
 android {
     compileSdk 32
 
@@ -42,6 +44,9 @@ android {
 }
 
 dependencies {
+    //markdown
+    implementation "io.noties.markwon:core:4.6.2"
+
     //view binding
     implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.7'
 
@@ -53,8 +58,9 @@ dependencies {
     //navigation api
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
+    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.4.1'
+    implementation 'androidx.fragment:fragment-ktx:1.5.0-alpha02'
 
     //LifeCycle
     implementation 'androidx.lifecycle:lifecycle-common:2.4.1'

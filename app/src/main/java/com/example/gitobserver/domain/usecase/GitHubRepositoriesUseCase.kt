@@ -2,6 +2,7 @@ package com.example.gitobserver.domain.usecase
 
 import com.example.gitobserver.data.repository.GitHubRepositoriesRepositoryImpl
 import com.example.gitobserver.domain.model.GitHubRepository
+import com.example.gitobserver.domain.model.GitHubRepositoryContents
 import javax.inject.Inject
 
 class GitHubRepositoriesUseCase @Inject constructor(

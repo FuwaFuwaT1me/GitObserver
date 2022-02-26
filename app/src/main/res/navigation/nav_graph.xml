@@ -18,5 +18,18 @@
         android:id="@+id/repositoriesFragment"
         android:name="com.example.gitobserver.presentation.repositories.RepositoriesFragment"
         android:label="fragment_repositories"
-        tools:layout="@layout/fragment_repositories" />
+        tools:layout="@layout/fragment_repositories" >
+        <action
+            android:id="@+id/action_repositoriesFragment_to_contentsFragment"
+            app:destination="@id/contentsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contentsFragment"
+        android:name="com.example.gitobserver.presentation.contents.ContentsFragment"
+        android:label="fragment_contents"
+        tools:layout="@layout/fragment_contents" >
+        <argument
+            android:name="repository"
+            app:argType="com.example.gitobserver.domain.model.GitHubRepository" />
+    </fragment>
 </navigation>
