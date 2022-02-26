@@ -49,12 +49,11 @@ class LoginFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        mBinding.toolBar.title = "GitHub observer"
         setupUI(requireView())
     }
 
     private fun setupUI(view: View) {
-        mBinding.toolBar.title = "GitHub observer"
+        mBinding.toolBar.title = getString(R.string.app_name)
 
         mBinding.btnLogin.setOnClickListener {
             if (CheckInternetConnection.isInternetAvailable(requireContext())) {
@@ -70,7 +69,7 @@ class LoginFragment : Fragment() {
                     )
                 }
             } else {
-                Toast.makeText(requireContext(), "No internet connection", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), getString(R.string.no_internet_connection), Toast.LENGTH_SHORT)
                     .show()
             }
         }
@@ -83,12 +82,12 @@ class LoginFragment : Fragment() {
         mBinding.btnChangeLoginType.setOnClickListener {
             if (isLoginByToken) {
                 isLoginByToken = false
-                mBinding.etLayoutLogin.hint = "Username"
-                mBinding.btnChangeLoginType.text = "Login with token"
+                mBinding.etLayoutLogin.hint = getString(R.string.username)
+                mBinding.btnChangeLoginType.text = getString(R.string.login_with_token)
             } else {
                 isLoginByToken = true
-                mBinding.etLayoutLogin.hint = "Personal access token"
-                mBinding.btnChangeLoginType.text = "Login with username"
+                mBinding.etLayoutLogin.hint = getString(R.string.token)
+                mBinding.btnChangeLoginType.text = getString(R.string.login_with_username)
             }
         }
     }
@@ -96,7 +95,6 @@ class LoginFragment : Fragment() {
     private fun requestLoginWithToken(view: View, inputToken: String) {
         mViewModel.login(inputToken)
             .observe(viewLifecycleOwner) {
-                Log.d("AAA", "login $it")
                 it?.let { resource ->
                     when (resource.status) {
                         Status.SUCCESS -> {
@@ -107,8 +105,6 @@ class LoginFragment : Fragment() {
                         Status.ERROR -> {
                             updateLoading(isLoading = false)
                             updateErrorMessageToken(isError = true)
-                            Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT)
-                                .show()
                         }
                         Status.LOADING -> {
                             updateLoading(isLoading = true)
@@ -121,7 +117,6 @@ class LoginFragment : Fragment() {
     private fun requestLoginWithUsername(view: View, inputUsername: String) {
         mViewModel.loginWithUsername(inputUsername)
             .observe(viewLifecycleOwner) {
-                Log.d("AAA", "login $it")
                 it?.let { resource ->
                     when (resource.status) {
                         Status.SUCCESS -> {
@@ -149,7 +144,7 @@ class LoginFragment : Fragment() {
 
     private fun updateErrorMessageToken(isError: Boolean) {
         if (isError) {
-            mBinding.etLayoutLogin.error = "Invalid token"
+            mBinding.etLayoutLogin.error = getString(R.string.invalid_token)
         } else {
             mBinding.etLayoutLogin.error = ""
         }
@@ -157,7 +152,7 @@ class LoginFragment : Fragment() {
 
     private fun updateErrorMessageUsername(isError: Boolean) {
         if (isError) {
-            mBinding.etLayoutLogin.error = "Invalid username"
+            mBinding.etLayoutLogin.error = getString(R.string.invalid_username)
         } else {
             mBinding.etLayoutLogin.error = ""
         }
@@ -169,7 +164,7 @@ class LoginFragment : Fragment() {
             mBinding.btnLogin.text = ""
         } else {
             mBinding.progress.visibility = View.INVISIBLE
-            mBinding.btnLogin.text = "Sign in"
+            mBinding.btnLogin.text = getString(R.string.sign_in)
         }
     }
 }

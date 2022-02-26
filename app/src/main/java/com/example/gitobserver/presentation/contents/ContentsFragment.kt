@@ -78,11 +78,13 @@ class ContentsFragment : Fragment() {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(gitHubRepository.url))
             startActivity(browserIntent)
         }
-        Log.d("BBB", "${gitHubRepository.license}")
-        mBinding.tvLicense.visibility = if (gitHubRepository.license == null) {
-            View.GONE
+        if (gitHubRepository.license == null) {
+            mBinding.tvLicense.visibility = View.INVISIBLE
+            mBinding.tvLicenseKey.visibility = View.INVISIBLE
         } else {
-            View.VISIBLE
+            mBinding.tvLicense.visibility = View.VISIBLE
+            mBinding.tvLicenseKey.visibility = View.VISIBLE
+            mBinding.tvLicenseKey.text = gitHubRepository.license?.key
         }
         mBinding.tvStars.text = gitHubRepository.starsCount.toString()
         mBinding.tvForks.text = gitHubRepository.forksCount.toString()

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_large">20dp</dimen>
+    <dimen name="padding_tiny">4dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="login_img_size">100dp</dimen>
+    <dimen name="stroke_width_1">1dp</dimen>
+    <dimen name="stroke_width_2">2dp</dimen>
+    <dimen name="login_btn_corner_radius">10dp</dimen>
+    <dimen name="progress_bar_width">35dp</dimen>
+    <dimen name="progress_bar_height">35dp</dimen>
+    <dimen name="text_small">16sp</dimen>
+    <dimen name="text_large">24sp</dimen>
+    <dimen name="text_medium">20sp</dimen>
+</resources>

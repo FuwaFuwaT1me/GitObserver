@@ -72,17 +72,17 @@ class RepositoriesFragment : Fragment(), OnRepositoryClickListener {
             mBinding.progressBar.visibility = View.GONE
             mBinding.ivNoInternet.visibility = View.VISIBLE
             mBinding.fabRefresh.visibility = View.VISIBLE
-            Toast.makeText(requireContext(), "No internet connection", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun setupUI() {
-        mBinding.toolBar.title = "Repositories"
+        mBinding.toolBar.title = getString(R.string.repositories)
 
         mBinding.toolBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.exit -> {
-                    view?.findNavController()?.popBackStack()
+                    view?.findNavController()?.navigate(R.id.action_repositoriesFragment_to_loginFragment)
                     sharedPrefUserStorageUseCase.exitUser()
                     true
                 }
@@ -118,7 +118,6 @@ class RepositoriesFragment : Fragment(), OnRepositoryClickListener {
     }
 
     private fun updateRecycler(repositories: List<GitHubRepository>) {
-        Log.d("CCC", repositories.toString())
         if (repositories.isEmpty()) {
             showIfEmpty()
         } else {

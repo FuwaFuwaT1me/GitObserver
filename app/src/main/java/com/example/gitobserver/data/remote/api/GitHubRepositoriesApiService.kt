@@ -1,7 +1,6 @@
 package com.example.gitobserver.data.remote.api
 
 import com.example.gitobserver.domain.model.GitHubRepository
-import com.example.gitobserver.domain.model.GitHubRepositoryContents
 import retrofit2.http.GET
 import retrofit2.http.Path
 

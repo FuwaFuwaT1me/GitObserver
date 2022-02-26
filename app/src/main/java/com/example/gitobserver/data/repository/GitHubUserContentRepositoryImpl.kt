@@ -1,7 +1,6 @@
 package com.example.gitobserver.data.repository
 
 import com.example.gitobserver.data.remote.api.GitHubUserContentApiService
-import com.example.gitobserver.domain.model.GitHubRepositoryContents
 import com.example.gitobserver.domain.repository.GItHubUserContentRepository
 import javax.inject.Inject
 

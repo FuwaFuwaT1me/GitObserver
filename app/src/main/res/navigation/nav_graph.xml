@@ -12,7 +12,8 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_repositoriesFragment"
-            app:destination="@id/repositoriesFragment" />
+            app:destination="@id/repositoriesFragment"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/repositoriesFragment"
@@ -22,18 +23,22 @@
         <action
             android:id="@+id/action_repositoriesFragment_to_contentsFragment"
             app:destination="@id/contentsFragment" />
+        <action
+            android:id="@+id/action_repositoriesFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/contentsFragment"
         android:name="com.example.gitobserver.presentation.contents.ContentsFragment"
         android:label="fragment_contents"
         tools:layout="@layout/fragment_contents" >
-        <argument
-            android:name="repository"
-            app:argType="com.example.gitobserver.domain.model.GitHubRepository" />
         <action
             android:id="@+id/action_contentsFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment" />
+            app:popUpTo="@id/nav_graph" />
+        <argument
+            android:name="repository"
+            app:argType="com.example.gitobserver.domain.model.GitHubRepository" />
     </fragment>
 </navigation>

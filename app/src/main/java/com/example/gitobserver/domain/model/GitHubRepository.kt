@@ -3,8 +3,9 @@ package com.example.gitobserver.domain.model
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 data class GitHubRepository(
     val id: Int,
     val name: String,
@@ -17,4 +18,4 @@ data class GitHubRepository(
     @SerializedName("watchers_count") val watchersCount: Int,
     val owner: UserDetails,
     val license: GitHubLicense?
-): Parcelable
+): java.io.Serializable
